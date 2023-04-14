@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>图片学习集成系统</title>
+    <style>
+        /* 去掉列表项标记并将标题和列表项居中 */
+        h1, ul {
+            text-align: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 将按钮圆角化 */
+        a {
+            border-radius: 5px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            width: 200px;
+            margin: 10px 0;
+            transition: all 0.3s ease-out;
+        }
+
+        /* 当鼠标悬停在按钮上时更改背景颜色并使按钮稍微变大 */
+        a:hover {
+            background-color: #3e8e41;
+            transform: scale(1.05);
+        }
+
+        /* 将包含列表项的 div 居中 */
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* 将标题字体加粗并设置颜色 */
+        h1 {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        /* 添加阴影效果 */
+        h1 {
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1>欢迎使用图片学习集成系统</h1>
+    <ul>
+        <li><a href='/superresolution'>图像超分辨率</a></li>
+        <li><a href='/denoise'>图像去噪</a></li>
+        <li><a href='/webptopng'>图像分割</a></li>
+        <li><a href='/defog'>图像去雾</a></li>
+        <li><a href='/coloring'>图像上色</a></li>
+        <li><a href='/onekey'>一键处理数据集</a></li>
+    </ul>
+</div>
+</body>
+</html>

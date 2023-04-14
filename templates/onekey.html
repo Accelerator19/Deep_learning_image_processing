@@ -1,0 +1,415 @@
+<html>
+<head>
+    <title>数据集一键处理</title>
+    <style>
+        html {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #container {
+            margin: 50px auto;
+            width: 50%;
+            height: 40vh;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px #666;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .file-input-label {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            height: 100%;
+            padding: 80px;
+            font-size: 1.2em;
+            color: #2f3542;
+            text-align: center;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .file-input-label:hover {
+            background-color: #f5f5f5;
+        }
+
+        .file-input-label:active {
+            transform: scale(0.95);
+        }
+
+        .file-input-label > canvas {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            visibility: hidden;
+        }
+
+        .file-input-label.has-canvas > canvas {
+            visibility: visible;
+        }
+
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: #3e8e41;
+            cursor: pointer;
+            transform: scale(1.05);
+        }
+
+        .switch-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            margin-bottom: 30px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+            margin-right: 30px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 22px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 17px;
+            width: 17px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(17px);
+            -ms-transform: translateX(17px);
+            transform: translateX(17px);
+        }
+
+        .switch-label {
+            position: relative;
+            display: inline-block;
+            margin-right: 10px; /* 调整与开关之间的距离 */
+            vertical-align: middle;
+        }
+
+        .switch-label:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 100%;
+            transform: translateY(-50%);
+            width: 30px; /* 调整label宽度 */
+            height: 30px; /* 调整label高度 */
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .input-label {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .input-field {
+            width: 60px;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <h1>数据集一键处理</h1>
+    <div class="switch-div">
+        <label class="switch-label" for="rotate">旋转</label>
+        <label class="switch">
+            <input type="checkbox" id="rotate" onclick="click_rotate()">
+            <span class="slider round"></span>
+        </label>
+        <label class="switch-label" for="zoom">放大</label>
+        <label class="switch">
+            <input type="checkbox" id="zoom" onclick="click_zoom()">
+            <span class="slider round"></span>
+        </label>
+        <label class="switch-label" for="cut">裁剪</label>
+        <label class="switch">
+            <input type="checkbox" id="cut" onclick="click_cut()">
+            <span class="slider round"></span>
+        </label>
+        <label class="switch-label" for="flip">翻转</label>
+        <label class="switch">
+            <input type="checkbox" id="flip" onclick="click_flip()">
+            <span class="slider round"></span>
+        </label>
+        <label class="switch-label" for="color">颜色变换</label>
+        <label class="switch">
+            <input type="checkbox" id="color" onclick="click_color()">
+            <span class="slider round"></span>
+        </label>
+    </div>
+    <div class="input-box">
+        <label for="turn-input" class="input-label">处理次数：</label>
+        <input type="number" id="turn-input" name="turn" class="input-field" min="1" max="100" value="10">
+    </div>
+
+    <form>
+        <label for="file-input" id="file-input-label" class="file-input-label">
+            <div id="preview-canvas"></div>
+            <span>选择图片</span>
+        </label>
+        <input type="file" id="file-input" accept="image/*" style="display: none" onchange="previewImage(event)"
+               multiple>
+        <br>
+        <button type="button" onclick="click_onekey()">确定</button>
+    </form>
+</div>
+<script>
+    let rotate = false; // 用于控制旋转变量
+    let zoom = false; // 用于控制放大变量
+    let cut = false; // 用于控制裁剪变量
+    let flip = false; // 用于控制翻转变量
+    let color = false; // 用于控制颜色变换变量
+
+    function click_rotate() {
+        rotate = !rotate; // 取反当前状态
+    }
+
+    function click_zoom() {
+        zoom = !zoom; // 取反当前状态
+    }
+
+    function click_cut() {
+        cut = !cut; // 取反当前状态
+    }
+
+    function click_flip() {
+        flip = !flip; // 取反当前状态
+    }
+
+    function click_color() {
+        color = !color; // 取反当前状态
+    }
+
+    function previewImage(event) {
+        const label = document.getElementById('file-input-label');
+        label.classList.remove('file-input-label');
+        label.classList.add('file-input-hidden');
+        const text = label.querySelector('span')
+        text.innerHTML = ''
+        const files = event.target.files;
+        const previewWrapper = document.getElementById('preview-canvas');
+        // 清空预览容器中的内容
+        previewWrapper.innerHTML = '';
+        const maxWidth = 100;
+        const maxHeight = 100;
+        let totalWidth = 0;
+        let rowHeight = 0;
+        let rowWidth = 0;
+        let rowCount = 0;
+        for (const file of files) {
+            const reader = new FileReader();
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            const img = new Image();
+            img.onload = () => {
+                // 计算缩放后的宽度和高度
+                let width = img.width;
+                let height = img.height;
+                if (width > maxWidth) {
+                    height = height * maxWidth / width;
+                    width = maxWidth;
+                }
+                if (height > maxHeight) {
+                    width = width * maxHeight / height;
+                    height = maxHeight;
+                }
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(img, 0, 0, width, height);
+                previewWrapper.appendChild(canvas);
+                // 计算每一行的高度和宽度
+                rowHeight = Math.max(rowHeight, height);
+                rowWidth += width;
+                totalWidth += width;
+                rowCount++;
+                if (rowCount >= 5) {
+                    const br = document.createElement('br');
+                    previewWrapper.appendChild(br);
+                    rowCount = 0;
+                    rowHeight = 0;
+                    rowWidth = 0;
+                }
+            };
+            img.src = URL.createObjectURL(file);
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function click_onekey() {
+        const fileInput = document.getElementById("file-input");
+        const files = fileInput.files;
+        const zip = new JSZip();
+        const turn = document.getElementById("turn-input").value;
+
+        for (let i = 0; i < turn; i++) {
+            for (const file of files) {
+                const nameParts = file.name.split(".");
+                const name = nameParts.slice(0, -1).join("_");
+                const ext = nameParts[nameParts.length - 1];
+                zip.file(`${name}_${i}.${ext}`, file);
+            }
+        }
+
+        zip.generateAsync({type: "blob"})
+            .then(blob => {
+                const formData = new FormData();
+                formData.append("zip", blob);
+
+                // 判断是否需要旋转
+                if (rotate) {
+                    formData.append("rotate", "True");
+                } else {
+                    formData.append("rotate", "False");
+                }
+
+                // 判断是否需要放大
+                if (zoom) {
+                    formData.append("zoom", "True");
+                } else {
+                    formData.append("zoom", "False");
+                }
+
+                // 判断是否需要裁剪
+                if (cut) {
+                    formData.append("cut", "True");
+                } else {
+                    formData.append("cut", "False");
+                }
+
+                // 判断是否需要翻转
+                if (flip) {
+                    formData.append("flip", "True");
+                } else {
+                    formData.append("flip", "False");
+                }
+
+                // 判断是否需要颜色变换
+                if (color) {
+                    formData.append("color", "True");
+                } else {
+                    formData.append("color", "False");
+                }
+
+                fetch("/api/onekey", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => {
+                        if (response.status === 200) {
+                            return response.blob();
+                        } else {
+                            throw new Error("Server returned status code " + response.status);
+                        }
+                    })
+                    .then(blob => {
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "converted.zip";
+                        link.click();
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+    }
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+</body>
+</html>
