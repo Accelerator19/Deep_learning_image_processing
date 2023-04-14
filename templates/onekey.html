@@ -20,7 +20,7 @@
         #container {
             margin: 50px auto;
             width: 50%;
-            height: 40vh;
+            height: 50vh;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
@@ -105,10 +105,18 @@
         .switch-div {
             display: flex;
             justify-content: center;
+            flex-direction: column;
             align-items: center;
             width: 100%;
             height: 100%;
             margin-bottom: 30px;
+        }
+
+        .switch-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
         .switch {
@@ -206,31 +214,50 @@
 <div id="container">
     <h1>数据集一键处理</h1>
     <div class="switch-div">
-        <label class="switch-label" for="rotate">旋转</label>
-        <label class="switch">
-            <input type="checkbox" id="rotate" onclick="click_rotate()">
-            <span class="slider round"></span>
-        </label>
-        <label class="switch-label" for="zoom">放大</label>
-        <label class="switch">
-            <input type="checkbox" id="zoom" onclick="click_zoom()">
-            <span class="slider round"></span>
-        </label>
-        <label class="switch-label" for="cut">裁剪</label>
-        <label class="switch">
-            <input type="checkbox" id="cut" onclick="click_cut()">
-            <span class="slider round"></span>
-        </label>
-        <label class="switch-label" for="flip">翻转</label>
-        <label class="switch">
-            <input type="checkbox" id="flip" onclick="click_flip()">
-            <span class="slider round"></span>
-        </label>
-        <label class="switch-label" for="color">颜色变换</label>
-        <label class="switch">
-            <input type="checkbox" id="color" onclick="click_color()">
-            <span class="slider round"></span>
-        </label>
+        <div class="switch-row">
+            <label class="switch-label" for="rotate">随机旋转</label>
+            <label class="switch">
+                <input type="checkbox" id="rotate" onclick="click_rotate()">
+                <span class="slider round"></span>
+            </label>
+            <label class="switch-label" for="zoom">随机放大</label>
+            <label class="switch">
+                <input type="checkbox" id="zoom" onclick="click_zoom()">
+                <span class="slider round"></span>
+            </label>
+            <label class="switch-label" for="cut">随机裁剪</label>
+            <label class="switch">
+                <input type="checkbox" id="cut" onclick="click_cut()">
+                <span class="slider round"></span>
+            </label>
+            <label class="switch-label" for="deblur">去除模糊</label>
+            <label class="switch">
+                <input type="checkbox" id="deblur" onclick="click_deblur()">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <div class="switch-row">
+            <label class="switch-label" for="flip">随机翻转</label>
+            <label class="switch">
+                <input type="checkbox" id="flip" onclick="click_flip()">
+                <span class="slider round"></span>
+            </label>
+            <label class="switch-label" for="color">颜色变换</label>
+            <label class="switch">
+                <input type="checkbox" id="color" onclick="click_color()">
+                <span class="slider round"></span>
+            </label>
+            <label class="switch-label" for="noise">添加噪声</label>
+            <label class="switch">
+                <input type="checkbox" id="noise" onclick="click_noise()">
+                <span class="slider round"></span>
+            </label>
+            <label class="switch-label" for="superresolution">超分辨率</label>
+            <label class="switch">
+                <input type="checkbox" id="superresolution" onclick="click_superresolution()">
+                <span class="slider round"></span>
+            </label>
+        </div>
     </div>
     <div class="input-box">
         <label for="turn-input" class="input-label">处理次数：</label>
@@ -254,6 +281,9 @@
     let cut = false; // 用于控制裁剪变量
     let flip = false; // 用于控制翻转变量
     let color = false; // 用于控制颜色变换变量
+    let noise = false; // 用于控制添加噪声变量
+    let deblur = false; // 用于控制去除模糊变量
+    let superresolution = false; // 用于控制超分辨率变量
 
     function click_rotate() {
         rotate = !rotate; // 取反当前状态
@@ -273,6 +303,18 @@
 
     function click_color() {
         color = !color; // 取反当前状态
+    }
+
+    function click_noise() {
+        noise = !noise; // 取反当前状态
+    }
+
+    function click_deblur() {
+        deblur = !deblur; // 取反当前状态
+    }
+
+    function click_superresolution() {
+        superresolution = !superresolution; // 取反当前状态
     }
 
     function previewImage(event) {
@@ -371,6 +413,13 @@
                     formData.append("cut", "False");
                 }
 
+                // 判断是否需要去除模糊
+                if (deblur) {
+                    formData.append("deblur", "True");
+                } else {
+                    formData.append("deblur", "False");
+                }
+
                 // 判断是否需要翻转
                 if (flip) {
                     formData.append("flip", "True");
@@ -383,6 +432,20 @@
                     formData.append("color", "True");
                 } else {
                     formData.append("color", "False");
+                }
+
+                // 判断是否需要添加噪声
+                if (noise) {
+                    formData.append("noise", "True");
+                } else {
+                    formData.append("noise", "False");
+                }
+
+                // 判断是否需要超分辨率
+                if (superresolution) {
+                    formData.append("superresolution", "True");
+                } else {
+                    formData.append("superresolution", "False");
                 }
 
                 fetch("/api/onekey", {

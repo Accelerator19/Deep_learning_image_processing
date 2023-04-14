@@ -171,7 +171,8 @@ def Onekey():
                 cut = request.form.get("cut")
                 flip = request.form.get("flip")
                 color = request.form.get("color")
-                image_buffer = function_onekey.pic_onekey(image_buffer, rotate, zoom, cut, flip, color)
+                noise = request.form.get("noise")
+                image_buffer = function_onekey.pic_onekey(image_buffer, rotate, zoom, cut, flip, color, noise)
                 result_files.append((filename, image_buffer))
 
     zip_buffer = io.BytesIO()

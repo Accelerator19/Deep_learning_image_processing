@@ -3,9 +3,10 @@ import base64
 import random
 from PIL import Image
 from PIL import ImageEnhance
+import numpy as np
 
 
-def pic_onekey(image_buffer, rotate, zoom, cut, flip, color):
+def pic_onekey(image_buffer, rotate, zoom, cut, flip, color, noise):
     # 使用PIL库打开图像
     image = Image.open(io.BytesIO(image_buffer))
     if rotate == "True":
@@ -52,6 +53,17 @@ def pic_onekey(image_buffer, rotate, zoom, cut, flip, color):
         image = image_enhancer.enhance(color_factor)
         image_enhancer = ImageEnhance.Contrast(image)
         image = image_enhancer.enhance(contrast_factor)
+
+    if noise == "True":
+        # 随机添加噪声
+        noise_factor = random.uniform(0, 0.05)
+        image_array = np.array(image)
+        image_array = image_array / 255.0
+        noise = np.random.normal(loc=0, scale=noise_factor, size=image_array.shape)
+        image_array = image_array + noise
+        image_array = np.clip(image_array, 0, 1)
+        image_array = (image_array * 255).astype(np.uint8)
+        image = Image.fromarray(image_array)
 
     # 将处理后的图像转换为Base64编码的字符串
     output_buffer = io.BytesIO()
