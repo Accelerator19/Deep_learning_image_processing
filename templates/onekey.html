@@ -334,11 +334,11 @@
         let rowWidth = 0;
         let rowCount = 0;
         for (const file of files) {
-            const reader = new FileReader();
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             const img = new Image();
             img.onload = () => {
+                URL.revokeObjectURL(img.src); // 释放图片对象占用的内存
                 // 计算缩放后的宽度和高度
                 let width = img.width;
                 let height = img.height;
@@ -368,7 +368,6 @@
                 }
             };
             img.src = URL.createObjectURL(file);
-            reader.readAsDataURL(file);
         }
     }
 
