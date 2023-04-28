@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/DeblurGANv2" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Real-ESRGAN_paddle_Lite" vcs="Git" />
   </component>
 </project>
